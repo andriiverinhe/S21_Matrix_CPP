@@ -65,8 +65,8 @@ TEST_F(CORECT_TEST, Test5) {
 
 // Cумма векторов
 TEST_F(CORECT_TEST, Test6) {
-    std::vector<double> values = {10, 11, 12, 13, 14, 15, 16, 17, 18, 19};
-    std::vector<double> trueVec = {20, 22, 24, 26, 28, 30, 32, 34, 36, 38};
+    std::vector<double> values = {10, 11, 12, 13, 14, 15, 16, 17, 18};
+    std::vector<double> trueVec = {20, 22, 24, 26, 28, 30, 32, 34, 36};
     S21Matrix trueMat(3, 3);
     S21Matrix res(3, 3);
     S21Matrix mat(3, 3);
@@ -77,8 +77,8 @@ TEST_F(CORECT_TEST, Test6) {
     EXPECT_TRUE(res.EqMatrix(trueMat));
 }
 TEST_F(CORECT_TEST, Test7) {
-    std::vector<double> values1 = {10.32112, -1121.12, 0.122, 1.313, 14.123123123, 0.12315, 16.312, 17.123, 123.3218, 12312312.9};
-    std::vector<double> values2 = {-10.32112, 1121.12, -0.122, -1.313, -14.123123123, -0.12315, -16.312, -17.123, -123.3218, -12312312.9};
+    std::vector<double> values1 = {10.32112, -1121.12, 0.122, 1.313, 14.123123123, 0.12315, 16.312, 17.123, 123.3218};
+    std::vector<double> values2 = {-10.32112, 1121.12, -0.122, -1.313, -14.123123123, -0.12315, -16.312, -17.123, -123.3218};
     std::vector<double> trueVec;
     for(size_t i = 0; i < values1.size(); i++) 
         trueVec.push_back(values1[i]+values2[i]);

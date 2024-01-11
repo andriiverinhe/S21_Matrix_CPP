@@ -46,6 +46,8 @@ void S21Matrix::copyMatrix(const S21Matrix &other) {
 // }
 
 void S21Matrix::setMatrixValue(std::vector<double> &values) {
+  if((rows_ * cols_) != (int)values.size())
+    throw std::invalid_argument("size vector != size matrix_");
   int count = 0;
   for (int i = 0; i < rows_; i++)
     for (int j = 0; j < cols_; j++)

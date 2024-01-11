@@ -15,13 +15,15 @@ class S21Matrix {
         double **matrix_;         // Pointer to the memory where the matrix is allocated
 
     public:
+
+// constructors and destructors
         S21Matrix();                 
         S21Matrix(int rows, int cols); 
         S21Matrix(const S21Matrix& other);
         S21Matrix(S21Matrix&& other) noexcept;
         ~S21Matrix();             
 
-        bool EqSizeMatrix(const S21Matrix& other) const;
+// OPERATIONS
         bool EqMatrix(const S21Matrix& other) const;
         void SumMatrix(const S21Matrix& other); 
         void SubMatrix(const S21Matrix& other);
@@ -32,7 +34,7 @@ class S21Matrix {
         S21Matrix CalcComplements();
         double Determinant() const;
         S21Matrix InverseMatrix();
-
+// OPERATORS
         S21Matrix operator+(const S21Matrix& other) const;
         S21Matrix operator-(const S21Matrix& other) const;
         S21Matrix operator*(const S21Matrix& other) const;
@@ -45,15 +47,20 @@ class S21Matrix {
         S21Matrix& operator*=(const S21Matrix &other);
         S21Matrix& operator*=(const double &number);
 
-        // void printMatrix() const;
-        // void fillRandom();
+// GETTERS
         int getRows_();
         int getCols_();
+        double getMatrixValue(int i, int j);
+// SETTERS
         void setRows_(int newRows);
         void setCols_(int newCols);
-        double getMatrixValue(int i, int j);
+// Set value in matrix 
         void setMatrixValue(int i, int j, double value);
         void setMatrixValue(std::vector<double>& values);
+
+        // void printMatrix() const;
+        // void fillRandom();
+        bool EqSizeMatrix(const S21Matrix& other) const;
 
 
     private:

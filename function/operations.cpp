@@ -15,14 +15,14 @@ bool S21Matrix::EqMatrix(const S21Matrix &other) const {
 
 void S21Matrix::SumMatrix(const S21Matrix &other) {
   if (!EqSizeMatrix(other))
-    throw std::logic_error("Incorrect matrix size for Sum");
+    throw std::logic_error("Different matrix dimensions");
 
   MATRIX_DOUBLE_LOOP(this->rows_, this->cols_)
     this->matrix_[i][j] += other.matrix_[i][j];
 }
 void S21Matrix::SubMatrix(const S21Matrix &other) {
   if (!EqSizeMatrix(other))
-    throw std::logic_error("Incorrect matrix size for Sub");
+    throw std::logic_error("Different matrix dimensions");
 
   MATRIX_DOUBLE_LOOP(this->rows_, this->cols_)
     this->matrix_[i][j] -= other.matrix_[i][j];
@@ -45,14 +45,14 @@ void S21Matrix::MulMatrix(const S21Matrix &other) {
     // Перемещаем ресурсы из временной матрицы в текущую
     *this = std::move(resultMatrix);
   } else 
-    throw std::logic_error("Incorrect matrix size for Multiplication");
+    throw std::logic_error("The number of columns of the first matrix is not equal to the number of rows of the second matrix");
 
 }
 
 S21Matrix S21Matrix::Transpose() {
   S21Matrix resultMatrix(cols_, rows_);
   MATRIX_DOUBLE_LOOP(this->rows_, this->cols_)
-   resultMatrix.matrix_[j][i] = matrix_[i][j];
+    resultMatrix.matrix_[j][i] = matrix_[i][j];
   return resultMatrix;
 }
 
@@ -60,26 +60,27 @@ S21Matrix S21Matrix::Transpose() {
 S21Matrix S21Matrix::CalcComplements() {
   S21Matrix resultMatrix(cols_, rows_);
   if (rows_ == cols_ && rows_ >= 2) {
-
-  MATRIX_DOUBLE_LOOP(rows_, cols_) {
-    S21Matrix minor = this->getMatrixMinor(i, j);
-    double determinant = 0.0;
-    determinant = minor.Determinant();
-    resultMatrix.matrix_[i][j] = pow(-1, (i + j)) * determinant;
-  }
+    MATRIX_DOUBLE_LOOP(rows_, cols_) {
+      S21Matrix minor = this->getMatrixMinor(i, j);
+      double determinant = 0.0;
+      determinant = minor.Determinant();
+      resultMatrix.matrix_[i][j] = pow(-1, (i + j)) * determinant;
+    }
   } else 
-    throw std::logic_error("Incorrect matrix size for CalcComplements");
+    throw std::logic_error("The matrix is not square");
   return resultMatrix;
 }
 
 // Рекурсивный метод для расчета детерминанта
 double S21Matrix::Determinant() const {
-  double det = 0.0;
+  if (rows_ != cols_)
+    throw std::logic_error("The matrix is not square");
+
   // Базовый случай: если матрица 1x1, то ее детерминант равен элементу матрицы
   if (rows_ == 1) 
     return matrix_[0][0];
 
-  if (rows_ == cols_) {
+  double det = 0.0;
   int sign = 1;
 
   for (int i = 0; i < cols_; ++i) {
@@ -99,8 +100,6 @@ double S21Matrix::Determinant() const {
     det += sign * matrix_[0][i] * subMatrix.Determinant();
     sign = -sign; // Меняем знак для следующей итерации
   }
-  } else 
-   throw std::logic_error("Incorrect matrix size for Determinant");
   return det;
 }
 
