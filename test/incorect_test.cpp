@@ -8,6 +8,29 @@ TEST_F(INCORRECT_TEST, TEST_STRUCT1) {
 }
 
 TEST_F(INCORRECT_TEST, TEST_STRUCT2) {
+    std::vector<double> values1 = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+    std::vector<double> values2 = {1, 2, 2, 2, 5, 6, 7, 8, 9};
+    S21Matrix mat1(3, 3);
+    S21Matrix mat2(3, 3);
+    mat1.setMatrixValue(values1);
+    mat2.setMatrixValue(values2);
+    EXPECT_FALSE(mat1.EqMatrix(mat2));
+}
+
+TEST_F(INCORRECT_TEST, TEST_STRUCT3) {
+    S21Matrix mat;
+    S21Matrix mat2;
+    mat = mat2;
+    EXPECT_TRUE(mat.EqMatrix(mat2));
+    mat = mat;
+    EXPECT_TRUE(mat.EqMatrix(mat));
+}
+
+TEST_F(INCORRECT_TEST, TEST_STRUCT4) {
+    ASSERT_THROW(S21Matrix a(__INT_MAX__, __INT_MAX__), std::bad_alloc);
+}
+
+TEST_F(INCORRECT_TEST, TEST_OPERATORS_1) {
  std::vector<double> values1 = {1};
     std::vector<double> values2 = {2,2,2,2};
 
@@ -21,18 +44,23 @@ TEST_F(INCORRECT_TEST, TEST_STRUCT2) {
     ASSERT_THROW(mat1 * mat2, std::logic_error);
 }
 
+TEST_F(INCORRECT_TEST, TEST_OPERATORS_2) {
+ std::vector<double> values1 = {1};
+    std::vector<double> values2 = {2,2,2,2};
 
-TEST_F(INCORRECT_TEST, TEST_STRUCT3) {
-    std::vector<double> values1 = {1, 2, 3, 4, 5, 6, 7, 8, 9};
-    std::vector<double> values2 = {1, 2, 2, 2, 5, 6, 7, 8, 9};
-    S21Matrix mat1(3, 3);
-    S21Matrix mat2(3, 3);
+    S21Matrix trueMat;
+    S21Matrix mat1(1, 1);
+    S21Matrix mat2(2, 2);
     mat1.setMatrixValue(values1);
     mat2.setMatrixValue(values2);
-    EXPECT_FALSE(mat1.EqMatrix(mat2));
+    ASSERT_THROW(mat2 + mat1, std::logic_error);
+    ASSERT_THROW(mat2 * mat1, std::logic_error);
+    ASSERT_THROW(mat2 - mat1, std::logic_error);
 }
 
-TEST_F(INCORRECT_TEST, TEST_STRUCT4) {
+
+
+TEST_F(INCORRECT_TEST, TEST_OPERATIONS_1) {
  std::vector<double> values1 = {1};
     std::vector<double> values2 = {2,2,2,2};
 
@@ -47,29 +75,8 @@ TEST_F(INCORRECT_TEST, TEST_STRUCT4) {
     ASSERT_THROW(mat1.MulMatrix(mat2), std::logic_error);
 }
 
-TEST_F(INCORRECT_TEST, TEST_STRUCT5) {
-    S21Matrix mat;
 
-    EXPECT_TRUE((mat.getRows_() == 3));
-    EXPECT_TRUE((mat.getCols_() == 3));
-}
-
-
-TEST_F(INCORRECT_TEST, TEST_STRUCT6) {
- std::vector<double> values1 = {1};
-    std::vector<double> values2 = {2,2,2,2};
-
-    S21Matrix trueMat;
-    S21Matrix mat1(1, 1);
-    S21Matrix mat2(2, 2);
-    mat1.setMatrixValue(values1);
-    mat2.setMatrixValue(values2);
-    ASSERT_THROW(mat2 + mat1, std::logic_error);
-    ASSERT_THROW(mat2 * mat1, std::logic_error);
-    ASSERT_THROW(mat2 - mat1, std::logic_error);
-}
-
-TEST_F(INCORRECT_TEST, TEST_STRUCT7) {
+TEST_F(INCORRECT_TEST, TEST_OPERATIONS_2) {
  std::vector<double> values1 = {1,2};
     std::vector<double> values2 = {2,2,2,2};
 
@@ -83,7 +90,9 @@ TEST_F(INCORRECT_TEST, TEST_STRUCT7) {
     ASSERT_THROW(mat2.SubMatrix(mat1), std::logic_error);
     ASSERT_THROW(mat2.MulMatrix(mat1), std::logic_error);
 }
-TEST_F(INCORRECT_TEST, TEST_STRUCT8) {
+
+
+TEST_F(INCORRECT_TEST, TEST_OPERATIONS_3) {
  std::vector<double> values1 = {1,2};
     std::vector<double> values2 = {2,2,2,2};
 
@@ -101,7 +110,31 @@ TEST_F(INCORRECT_TEST, TEST_STRUCT8) {
     EXPECT_FALSE(mat1.EqMatrix(mat2));
 }
 
-TEST_F(INCORRECT_TEST, TEST_STRUCT9) {
+
+TEST_F(INCORRECT_TEST, TEST_OPERATIONS_4) {
+    S21Matrix mat1(4, 2);
+    ASSERT_THROW(mat1.CalcComplements(), std::logic_error);
+    S21Matrix mat2(2, 5);
+    ASSERT_THROW(mat2.CalcComplements(), std::logic_error);
+    S21Matrix mat3(1, 1);
+    ASSERT_THROW(mat3.CalcComplements(), std::logic_error);        
+}
+
+TEST_F(INCORRECT_TEST, TEST_GETTERS_1) {
+    S21Matrix mat;
+
+    EXPECT_TRUE((mat.getRows_() == 3));
+    EXPECT_TRUE((mat.getCols_() == 3));
+}
+
+
+TEST_F(INCORRECT_TEST, TEST_GETTERS_2) {
+    S21Matrix mat(3, 3);
+    ASSERT_THROW(mat.getMatrixValue(-10, 2), std::invalid_argument);
+    ASSERT_THROW(mat.getMatrixValue(1, -120), std::invalid_argument);
+}
+
+TEST_F(INCORRECT_TEST, TEST_SETTERS_1) {
     S21Matrix a(2,2);
     ASSERT_THROW(a.setCols_(-32), std::invalid_argument);
     ASSERT_THROW(a.setCols_(0), std::invalid_argument);
@@ -117,38 +150,32 @@ TEST_F(INCORRECT_TEST, TEST_STRUCT9) {
     EXPECT_EQ(a.getRows_(), 2);
 }
 
-TEST_F(INCORRECT_TEST, TEST_STRUCT10) {
-    S21Matrix mat;
-    S21Matrix mat2;
-    mat = mat2;
-    EXPECT_TRUE(mat.EqMatrix(mat2));
-}
-TEST_F(INCORRECT_TEST, TEST_STRUCT11) {
-    ASSERT_THROW(S21Matrix a(__INT_MAX__, __INT_MAX__), std::bad_alloc);
-}
-
-TEST_F(INCORRECT_TEST, TEST_IN_SETVALUE_1) {
+TEST_F(INCORRECT_TEST, TEST_SETTERS_2) {
     S21Matrix matrix(5, 1);
     ASSERT_THROW(matrix.setMatrixValue(1, -1, 2), std::invalid_argument);
 }
-TEST_F(INCORRECT_TEST, TEST_IN_SETVALUE_2) {
+TEST_F(INCORRECT_TEST, TEST_SETTERS_3) {
     S21Matrix matrix(5, 1);
     ASSERT_THROW(matrix.setMatrixValue(-1, 1, 2), std::invalid_argument);
 }
 
-TEST_F(INCORRECT_TEST, TEST_IN_SETVALUE_3) {
+TEST_F(INCORRECT_TEST, TEST_SETTERS_4) {
     S21Matrix matrix(5, 1);
     ASSERT_THROW(matrix.setMatrixValue(1, 6, 2), std::invalid_argument);
 }
-TEST_F(INCORRECT_TEST, TEST_IN_SETVALUE_4) {
+TEST_F(INCORRECT_TEST, TEST_SETTERS_5) {
     S21Matrix matrix(5, 1);
     ASSERT_THROW(matrix.setMatrixValue(6, 2, 2), std::invalid_argument);
 }
 
-
-TEST_F(INCORRECT_TEST, TEST_IN_SETVALUE_6) {
+TEST_F(INCORRECT_TEST, TEST_SETTERS_6) {
     S21Matrix matrix(5, 1);
     ASSERT_THROW(matrix.setMatrixValue(-23, -23, 2), std::invalid_argument);
+}
+TEST_F(INCORRECT_TEST, TEST_SETTERS_7) {
+    S21Matrix matrix(5, 1);
+    std::vector<double> values = {1,2,3,4,5,6,7,8,9};
+    ASSERT_THROW(matrix.setMatrixValue(values), std::invalid_argument);
 }
 
 TEST_F (INCORRECT_TEST, EQ_MATRIX_TEST_1) {
@@ -159,25 +186,4 @@ TEST_F (INCORRECT_TEST, EQ_MATRIX_TEST_1) {
     mat1.setMatrixValue(values1);
     mat2.setMatrixValue(values2);
     EXPECT_FALSE(mat1.EqMatrix(mat2));
-}
-
-// TEST_F (INCORRECT_TEST, EQ_MATRIX_TEST_2) {
-//     std::cout << "_______" << std::endl;
-//     S21Matrix mat1(2, -2);
-//     int cols = mat1.getCols_();
-//     (void)cols;
-//     double values = mat1.getMatrixValue(1,1);
-//     std::cout << cols << " " << values << std::endl;
-//     std::cout << "_______" << std::endl;
-
-// }
-
-TEST_F(INCORRECT_TEST, MATRIX_DEL_TEST_1) {
-    S21Matrix mat(3, 3);
-}
-
-TEST_F(INCORRECT_TEST, MATRIX_GETVALUE_TEST_1) {
-    S21Matrix mat(3, 3);
-    ASSERT_THROW(mat.getMatrixValue(-10, 2), std::invalid_argument);
-    ASSERT_THROW(mat.getMatrixValue(1, -120), std::invalid_argument);
 }
